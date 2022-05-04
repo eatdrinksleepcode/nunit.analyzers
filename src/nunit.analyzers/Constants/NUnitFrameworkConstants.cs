@@ -94,6 +94,10 @@ namespace NUnit.Analyzers.Constants
         public const string NameOfStringAssertIsMatch = "IsMatch";
         public const string NameOfStringAssertStartsWith = "StartsWith";
 
+        public const string NameOfCollectionAssert = "CollectionAssert";
+        public const string NameOfDirectoryAssert = "DirectoryAssert";
+        public const string NameOfFileAssert = "FileAssert";
+
         public const string FullNameOfTypeIs = "NUnit.Framework.Is";
         public const string FullNameOfTypeTestCaseAttribute = "NUnit.Framework.TestCaseAttribute";
         public const string FullNameOfTypeTestCaseSourceAttribute = "NUnit.Framework.TestCaseSourceAttribute";
@@ -151,7 +155,7 @@ namespace NUnit.Analyzers.Constants
 
         public static readonly string[] AllAsserts =
         {
-            NameOfAssert, NameOfStringAssert
+            NameOfAssert, NameOfCollectionAssert, NameOfDirectoryAssert, NameOfFileAssert, NameOfStringAssert
         };
     }
 }

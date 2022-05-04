@@ -105,6 +105,10 @@ namespace NUnit.Analyzers.Tests.Constants
             (nameof(NUnitFrameworkConstants.NameOfStringAssertIsMatch), nameof(StringAssert.IsMatch)),
             (nameof(NUnitFrameworkConstants.NameOfStringAssertStartsWith), nameof(StringAssert.StartsWith)),
 
+            (nameof(NUnitFrameworkConstants.NameOfCollectionAssert), nameof(CollectionAssert)),
+            (nameof(NUnitFrameworkConstants.NameOfDirectoryAssert), nameof(DirectoryAssert)),
+            (nameof(NUnitFrameworkConstants.NameOfFileAssert), nameof(FileAssert)),
+
             (nameof(NUnitFrameworkConstants.NameOfConstraint), nameof(Constraint)),
 
             (nameof(NUnitFrameworkConstants.NameOfTestCaseAttribute), nameof(TestCaseAttribute)),
