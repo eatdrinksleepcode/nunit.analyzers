@@ -157,5 +157,46 @@ namespace NUnit.Analyzers.Constants
         {
             NameOfAssert, NameOfCollectionAssert, NameOfDirectoryAssert, NameOfFileAssert, NameOfStringAssert
         };
+
+        public static readonly TypeDescription Assert = new TypeDescription(NameOfAssert);
+        public static readonly MethodDescription AssertAreEqual = new MethodDescription(Assert, NameOfAssertAreEqual);
+        public static readonly MethodDescription AssertAreNotEqual = new MethodDescription(Assert, NameOfAssertAreNotEqual);
+        public static readonly MethodDescription AssertAreSame = new MethodDescription(Assert, NameOfAssertAreSame);
+        public static readonly MethodDescription AssertAreNotSame = new MethodDescription(Assert, NameOfAssertAreNotSame);
+        public static readonly MethodDescription AssertThat = new MethodDescription(Assert, NameOfAssertThat);
+
+        public static readonly TypeDescription StringAssert = new TypeDescription(NameOfStringAssert);
+        public static readonly MethodDescription StringAssertAreEqualIgnoringCase = new MethodDescription(StringAssert, NameOfStringAssertAreEqualIgnoringCase);
+        public static readonly MethodDescription StringAssertAreNotEqualIgnoringCase = new MethodDescription(StringAssert, NameOfStringAssertAreNotEqualIgnoringCase);
+        public static readonly MethodDescription StringAssertContains = new MethodDescription(StringAssert, NameOfStringAssertContains);
+        public static readonly MethodDescription StringAssertDoesNotContain = new MethodDescription(StringAssert, NameOfStringAssertDoesNotContain);
+        public static readonly MethodDescription StringAssertDoesNotEndWith = new MethodDescription(StringAssert, NameOfStringAssertDoesNotEndWith);
+        public static readonly MethodDescription StringAssertDoesNotMatch = new MethodDescription(StringAssert, NameOfStringAssertDoesNotMatch);
+        public static readonly MethodDescription StringAssertDoesNotStartWith = new MethodDescription(StringAssert, NameOfStringAssertDoesNotStartWith);
+        public static readonly MethodDescription StringAssertEndsWith = new MethodDescription(StringAssert, NameOfStringAssertEndsWith);
+        public static readonly MethodDescription StringAssertIsMatch = new MethodDescription(StringAssert, NameOfStringAssertIsMatch);
+        public static readonly MethodDescription StringAssertStartsWith = new MethodDescription(StringAssert, NameOfStringAssertStartsWith);
+
+        public class TypeDescription
+        {
+            public TypeDescription(string name)
+            {
+                this.Name = name;
+            }
+
+            public string Name { get; }
+        }
+
+        public class MethodDescription
+        {
+            public MethodDescription(TypeDescription parent, string name)
+            {
+                this.Parent = parent;
+                this.Name = name;
+            }
+
+            public TypeDescription Parent { get; }
+            public string Name { get; }
+        }
     }
 }

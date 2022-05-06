@@ -18,26 +18,22 @@ namespace NUnit.Analyzers.ConstActualValueUsage
     {
         internal const string SwapArgumentsDescription = "Swap actual and expected arguments";
 
-        private static readonly string[] SupportedClassicAsserts = new[]
+        private static readonly NUnitFrameworkConstants.MethodDescription[] SupportedClassicAsserts = new[]
         {
-            NUnitFrameworkConstants.NameOfAssertAreEqual,
-            NUnitFrameworkConstants.NameOfAssertAreNotEqual,
-            NUnitFrameworkConstants.NameOfAssertAreSame,
-            NUnitFrameworkConstants.NameOfAssertAreNotSame,
-        };
-
-        private static readonly string[] SupportedStringAsserts = new[]
-        {
-            NUnitFrameworkConstants.NameOfStringAssertAreEqualIgnoringCase,
-            NUnitFrameworkConstants.NameOfStringAssertAreNotEqualIgnoringCase,
-            NUnitFrameworkConstants.NameOfStringAssertContains,
-            NUnitFrameworkConstants.NameOfStringAssertDoesNotContain,
-            NUnitFrameworkConstants.NameOfStringAssertDoesNotEndWith,
-            NUnitFrameworkConstants.NameOfStringAssertDoesNotMatch,
-            NUnitFrameworkConstants.NameOfStringAssertDoesNotStartWith,
-            NUnitFrameworkConstants.NameOfStringAssertEndsWith,
-            NUnitFrameworkConstants.NameOfStringAssertIsMatch,
-            NUnitFrameworkConstants.NameOfStringAssertStartsWith,
+            NUnitFrameworkConstants.AssertAreEqual,
+            NUnitFrameworkConstants.AssertAreNotEqual,
+            NUnitFrameworkConstants.AssertAreSame,
+            NUnitFrameworkConstants.AssertAreNotSame,
+            NUnitFrameworkConstants.StringAssertAreEqualIgnoringCase,
+            NUnitFrameworkConstants.StringAssertAreNotEqualIgnoringCase,
+            NUnitFrameworkConstants.StringAssertContains,
+            NUnitFrameworkConstants.StringAssertDoesNotContain,
+            NUnitFrameworkConstants.StringAssertDoesNotEndWith,
+            NUnitFrameworkConstants.StringAssertDoesNotMatch,
+            NUnitFrameworkConstants.StringAssertDoesNotStartWith,
+            NUnitFrameworkConstants.StringAssertEndsWith,
+            NUnitFrameworkConstants.StringAssertIsMatch,
+            NUnitFrameworkConstants.StringAssertStartsWith,
         };
 
         private static readonly string[] SupportedIsConstraints = new[]
@@ -102,11 +98,11 @@ namespace NUnit.Analyzers.ConstActualValueUsage
 
             var methodSymbol = semanticModel.GetSymbolInfo(invocationSyntax).Symbol as IMethodSymbol;
 
-            if (methodSymbol is null || !methodSymbol.ContainingType.IsAnyAssert())
+            if (methodSymbol is null)
                 return false;
 
             // option 1: Classic assert (e.g. Assert.AreEqual(expected, actual) )
-            if ((IsSupportedAssert(methodSymbol) || IsSupportedStringAssert(methodSymbol))
+            if (SupportedClassicAsserts.Any(methodSymbol.IsInstanceOf)
                 && methodSymbol.Parameters.Length >= 2)
             {
                 expectedArgument = invocationSyntax.ArgumentList.Arguments[0].Expression;
@@ -116,7 +112,7 @@ namespace NUnit.Analyzers.ConstActualValueUsage
 
             // option 2: Assert with 'actual' and 'constraint' parameters
             // (e.g. Assert.That(actual, Is.EqualTo(expected)))
-            if (methodSymbol.Name == NUnitFrameworkConstants.NameOfAssertThat
+            if (methodSymbol.IsInstanceOf(NUnitFrameworkConstants.AssertThat)
                 && methodSymbol.Parameters.Length >= 2)
             {
                 actualArgument = invocationSyntax.ArgumentList.Arguments[0].Expression;
@@ -149,16 +145,6 @@ namespace NUnit.Analyzers.ConstActualValueUsage
             }
 
             return false;
-        }
-
-        private static bool IsSupportedAssert(IMethodSymbol methodSymbol)
-        {
-            return methodSymbol.ContainingType.Name == NUnitFrameworkConstants.NameOfAssert && SupportedClassicAsserts.Contains(methodSymbol.Name);
-        }
-
-        private static bool IsSupportedStringAssert(IMethodSymbol methodSymbol)
-        {
-            return methodSymbol.ContainingType.Name == NUnitFrameworkConstants.NameOfStringAssert && SupportedStringAsserts.Contains(methodSymbol.Name);
         }
     }
 }
