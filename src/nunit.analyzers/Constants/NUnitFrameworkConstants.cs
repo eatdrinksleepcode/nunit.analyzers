@@ -153,7 +153,7 @@ namespace NUnit.Analyzers.Constants
 
         public const string NUnitFrameworkAssemblyName = "nunit.framework";
 
-        public static readonly string[] AllAsserts =
+        public static readonly string[] AllNamesOfAsserts =
         {
             NameOfAssert, NameOfCollectionAssert, NameOfDirectoryAssert, NameOfFileAssert, NameOfStringAssert
         };

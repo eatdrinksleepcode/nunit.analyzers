@@ -30,7 +30,7 @@ namespace NUnit.Analyzers.Extensions
         {
             return @this is not null &&
                    @this.ContainingAssembly.Name == NUnitFrameworkConstants.NUnitFrameworkAssemblyName &&
-                   NUnitFrameworkConstants.AllAsserts.Contains(@this.Name);
+                   NUnitFrameworkConstants.AllNamesOfAsserts.Contains(@this.Name);
         }
 
         internal static bool IsConstraint(this ITypeSymbol? @this)
