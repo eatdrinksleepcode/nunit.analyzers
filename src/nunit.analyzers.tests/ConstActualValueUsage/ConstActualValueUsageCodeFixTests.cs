@@ -163,5 +163,50 @@ namespace NUnit.Analyzers.Tests.ConstActualValueUsage
             RoslynAssert.CodeFix(analyzer, fix, expectedDiagnostic, code, fixedCode,
                 fixTitle: ConstActualValueUsageCodeFix.SwapArgumentsDescription);
         }
+
+        [TestCase(nameof(CollectionAssert.AreEqual))]
+        [TestCase(nameof(CollectionAssert.AreEquivalent))]
+        [TestCase(nameof(CollectionAssert.AreNotEqual))]
+        [TestCase(nameof(CollectionAssert.AreNotEquivalent))]
+        public void LiteralArgumentIsProvidedForClassicCollectionAssertCodeFix(string classicAssertMethod)
+        {
+            var code = TestUtility.WrapMethodInClassNamespaceAndAddUsings($@"
+                public void Test()
+                {{
+                    string[] actual = new [] {{ ""act"" }};
+                    CollectionAssert.{classicAssertMethod}(actual, ↓new [] {{ ""exp"" }});
+                }}");
+
+            var fixedCode = TestUtility.WrapMethodInClassNamespaceAndAddUsings($@"
+                public void Test()
+                {{
+                    string actual = ""act"";
+                    CollectionAssert.{classicAssertMethod}(↓new [] {{ ""exp"" }}, actual);
+                }}");
+
+            RoslynAssert.CodeFix(analyzer, fix, expectedDiagnostic, code, fixedCode,
+                fixTitle: ConstActualValueUsageCodeFix.SwapArgumentsDescription);
+        }
+
+        [Test]
+        public void LiteralNamedArgumentIsProvidedForCollectionAssertContainsCodeFix()
+        {
+            var code = TestUtility.WrapMethodInClassNamespaceAndAddUsings(@"
+                public void Test()
+                {
+                    string[] actual = new[] { ""act"" };
+                    CollectionAssert.Contains(actual: ↓""exp"", expected: actual);
+                }");
+
+            var fixedCode = TestUtility.WrapMethodInClassNamespaceAndAddUsings(@"
+                public void Test()
+                {
+                    string actual = ""act"";
+                    CollectionAssert.Contains(actual: actual, expected: ""exp"");
+                }");
+
+            RoslynAssert.CodeFix(analyzer, fix, expectedDiagnostic, code, fixedCode,
+                fixTitle: ConstActualValueUsageCodeFix.SwapArgumentsDescription);
+        }
     }
 }
